@@ -23,7 +23,7 @@ An enhanced TCP echo server implementing concurrency, logging, command handling,
 ### Running the Server
 1. **Build the executable:**
    ```bash
-   go build -o echo-server
+   ./echo-server --port 4808
 2. **Second Terminal - connect a client:**
     ```bash
    nc localhost 4808
