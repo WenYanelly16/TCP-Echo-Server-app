@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
+	"strings"
 	"time"
 )
 
@@ -42,6 +44,12 @@ func main() {
 func handleConnection(conn net.Conn) {
 	clientAddr := conn.RemoteAddr().String()
 	log.Printf("Client connected: %s", clientAddr)
+	logFile, err := os.Create(fmt.Sprintf("%s.log", strings.ReplaceAll(clientAddr, ":", "_")))
+	if err != nil {
+		log.Printf("Error creating log file for %s: %v", clientAddr, err)
+		return
+	}
+	defer logFile.Close()
 	defer func() {
 		conn.Close()
 		log.Printf("Client disconnected: %s", clientAddr)
