@@ -89,4 +89,14 @@ func handleConnection(conn net.Conn) {
 			}
 		}
 	}()
+	switch {
+	case strings.EqualFold(message, "hello"):
+		writer.WriteString("Hi there!\n")
+	case strings.EqualFold(message, "bye"):
+		writer.WriteString("Goodbye!\n")
+		writer.Flush()
+		return
+	default:
+		writer.WriteString(message + "\n")
+	}
 }
