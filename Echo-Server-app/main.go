@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"log"
@@ -98,5 +99,26 @@ func handleConnection(conn net.Conn) {
 		return
 	default:
 		writer.WriteString(message + "\n")
+	}
+}
+func handleCommand(cmd string, writer *bufio.Writer, conn net.Conn) {
+	parts := strings.SplitN(cmd, " ", 2)
+	command := strings.TrimSpace(parts[0])
+
+	switch command {
+	case "/time":
+		writer.WriteString(time.Now().Format(time.RFC3339) + "\n")
+	case "/quit":
+		writer.WriteString("Closing connection\n")
+		writer.Flush()
+		conn.Close()
+	case "/echo":
+		if len(parts) > 1 {
+			writer.WriteString(parts[1] + "\n")
+		} else {
+			writer.WriteString("Usage: /echo <message>\n")
+		}
+	default:
+		writer.WriteString("Unknown command\n")
 	}
 }
