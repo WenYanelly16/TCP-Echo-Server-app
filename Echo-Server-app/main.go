@@ -1,10 +1,23 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net"
+	"time"
 )
+
+var (
+	port    int
+	timeout time.Duration
+)
+
+func init() {
+	flag.IntVar(&port, "port", 4000, "Port to listen on")
+	flag.DurationVar(&timeout, "timeout", 30*time.Second, "Client inactivity timeout")
+	flag.Parse()
+}
 
 func main() {
 	listener, err := net.Listen("tcp", ":4000")
