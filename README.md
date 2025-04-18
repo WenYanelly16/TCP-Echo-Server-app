@@ -25,13 +25,15 @@ An enhanced TCP echo server implementing concurrency, logging, command handling,
    ```bash
    go build -o echo-server
 2. **Second Terminal - connect a client:**
+    ```bash
    nc localhost 4808
 
 ***Testing Commands:***
-hello            # Returns "Hi there!"
-bye              # Returns "Goodbye!" and disconnects
-/time            # Returns current server time
-/echo [message]  # Returns the message back
-/quit            # Closes the connection
+  
+      hello            # Returns "Hi there!"
+      bye              # Returns "Goodbye!" and disconnects
+      /time            # Returns current server time
+      /echo [message]  # Returns the message back
+      /quit            # Closes the connection
 
-Demo Video
+## Demo Video
