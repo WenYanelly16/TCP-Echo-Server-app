@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net"
 )
 
 func main() {
 	listener, err := net.Listen("tcp", ":4000")
+	log.Printf("Server listening on :%d", port)
 	if err != nil {
 		panic(err)
 	}
@@ -25,6 +27,12 @@ func main() {
 }
 
 func handleConnection(conn net.Conn) {
+	clientAddr := conn.RemoteAddr().String()
+	log.Printf("Client connected: %s", clientAddr)
+	defer func() {
+		conn.Close()
+		log.Printf("Client disconnected: %s", clientAddr)
+	}()
 	defer conn.Close()
 	buf := make([]byte, 1024)
 
