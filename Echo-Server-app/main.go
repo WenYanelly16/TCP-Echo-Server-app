@@ -60,4 +60,25 @@ func handleConnection(conn net.Conn) {
 			fmt.Println("Error writing to client:", err)
 		}
 	}
+	activity := make(chan bool)
+	defer close(activity)
+
+	go func() {
+		timer := time.NewTimer(timeout)
+		defer timer.Stop()
+		for {
+			select {
+			case <-activity:
+				if !timer.Stop() {
+					<-timer.C
+				}
+				timer.Reset(timeout)
+			case <-timer.C:
+				writer.WriteString("Connection timed out due to inactivity\n")
+				writer.Flush()
+				conn.Close()
+				return
+			}
+		}
+	}()
 }
